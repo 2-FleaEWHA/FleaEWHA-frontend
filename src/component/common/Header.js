@@ -11,10 +11,8 @@ function Header() {
             <img src={SearchImg} style={{'margin': '3%', 'width': '15px'}} />
             <Input />
         </SearchBox>
-        <LoginBtn>LOGIN</LoginBtn>
-        <LoginBtn>SIGNUP</LoginBtn>
+        <LoginBtn>GOOGLE LOGIN</LoginBtn>
       </HeaderBar>
-
   );
 }
 
