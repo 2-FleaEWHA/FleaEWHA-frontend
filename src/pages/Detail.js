@@ -85,9 +85,9 @@ function Detail() {
       <div>
           <SortBar>
               <DropDown>
-                  <SortOption value={"total"}>전체</SortOption>
-                  <SortOption value={"selling"}>판매중</SortOption>
-                  <SortOption value={"soldOut"}>판매완료</SortOption>
+                  <SortOption value={"전체"}>전체</SortOption>
+                  <SortOption value={"판매중"}>판매중</SortOption>
+                  <SortOption value={"판매완료"}>판매완료</SortOption>
               </DropDown>
           </SortBar>
           <MenuBar>
