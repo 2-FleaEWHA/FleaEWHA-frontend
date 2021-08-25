@@ -1,86 +1,21 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Card from "../component/product/Card";
-
-const product = [
-    {
-        "productID": 1,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    },
-    {
-        "productID": 2,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    },
-    {
-        "productID": 2,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    },
-    {
-        "productID": 2,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    },
-    {
-        "productID": 2,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    }
-]
+import axios from 'axios';
 
 function Detail() {
-  /*const [data, product] = useState();
+  const [data, product] = useState();
+  const [sort, setSort] = useState('전체');
   useEffect(async () => {
         try {
-          const response = await axios.get(path);
+          const response = await axios.get(`http://localhost:8080/product/`+sort+`?option=전체`);
           product(response.data);
         } catch (e) {
           console.log(e)
         }
       }, []
-  )*/
+  )
+  console.log(data);
   return (
       <div>
           <SortBar>
@@ -101,10 +36,10 @@ function Detail() {
               <MenuBtn>생활소품</MenuBtn>
           </MenuBar>
           <ProductList>
-              { product ? product.map((goods, i) => {
+              { data ? data.map((goods, i) => {
                   return (
                       <CardComponent>
-                          <Card title={goods.title} price={goods.price} />
+                        <Card id={goods.productID} title={goods.title} price={goods.price} image={goods.files[0]} />
                       </CardComponent>
                   );
               }):''}
