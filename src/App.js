@@ -7,6 +7,7 @@ import Main from './pages/Main';
 import Detail from './pages/Detail';
 import ProductInform from './pages/ProductInform';
 import ProductRegister from './pages/ProductRegister';
+import MyPage from './pages/Login/MyPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route exact path="/detail" component={Detail} />
         <Route exact path="/productdetail/:no" component={ProductInform} />
         <Route exact path="/productregister" component={ProductRegister} />
+        <Route exact path="/mypage" component={MyPage}/>
       </Switch>
       <Footer />
     </BrowserRouter>

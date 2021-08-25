@@ -1,76 +1,25 @@
-import React from "react";
-import styled from "styled-components";
+import React , {useEffect, useState} from "react";
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Card from "../component/product/Card";
-import BannerImg from "../asset/banner.svg";
+import Card from '../component/product/Card';
+import BannerImg from '../asset/banner.svg';
+import axios from 'axios';
 function Main() {
-  const product = [
-    {
-        "productID": 1,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    },
-    {
-        "productID": 2,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    },
-    {
-        "productID": 2,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    },
-    {
-        "productID": 2,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
-    },
-    {
-        "productID": 2,
-        "title": "testtitle",
-        "categoryName": "의류",
-        "optionName": "판매중",
-        "price": 1000,
-        "files": [
-            {
-                "fileURL": "https://fleaewhabucket.s3.ap-northeast-2.amazonaws.com/2021-08-16T20%3A31%3A55.425560900_ewha.png"
-            }
-        ],
-        "createTime": "2021-08-17 10:27:48"
+  const [product, setProduct]=useState(null);
+  const [error, setError]=useState(null);
+  useEffect(()=>{
+    const fetchData=async()=>{
+        try{
+          setProduct(null); //초기화
+          const response=await axios.get('http://localhost:8080/main');
+          setProduct(response.data);
+      } catch(e){
+        setError(e);
+      }
     }
-]
+    fetchData();
+  }, []);
+
   return (
     <div>
       <Banner src={BannerImg} />      
@@ -114,5 +63,6 @@ const MoreButton=styled.button`
 border:none;
 background:transparent;
 font-weight:bold;
+cursor:pointer;
 `
 export default Main;
