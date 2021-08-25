@@ -1,15 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-import {useState, useEffect} from 'react';
-import axios from 'axios';
+import {Link} from 'react-router-dom';
 import BasicImg from '../../asset/basicImg.svg';
 
 function Card(props) {
-
   return (
       <div style={{"display": "inline-flex", "flex-direction": "row", "justify-content": "center"}}>
+          {props ? (
           <GoodsList>
-              <Image><img style={{'width':'250px', 'height': '250px'}} src={BasicImg} /></Image>
+              <Link to={`/productdetail/${props.id}`}>
+                  <Image>
+                      <img style={{'width':'250px', 'height': '250px'}} src={props.image?props.image.fileURL:BasicImg} />
+                  </Image>
+              </Link>
               <GoodsDetail>
                   <Name>{props.title}</Name>
                   <SalePrice>
@@ -17,6 +20,7 @@ function Card(props) {
                   </SalePrice>
               </GoodsDetail>
           </GoodsList>
+          ):''}
       </div>
   );
 }
