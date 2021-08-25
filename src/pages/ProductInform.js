@@ -1,25 +1,46 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styled from 'styled-components';
+import axios from 'axios';
 import Left from '../asset/leftCursor.svg';
 import Right from '../asset/rightCursor.svg';
 
-function ProductInform() {
-    const alertLeft = () => {alert('left')}
+function ProductInform({match}) {
+  const {no} = match.params;
+  const category = ['전체', '의류', '문구', '가방', '기념품', '공동구매', '나눔', '생활소품'];
+  const [info, setInfo] = useState('전체');
+  useEffect(async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/products/${no}`);
+                setInfo(response.data);
+            } catch (e) {
+                console.log(e)
+            }
+        }, []
+    )
+  const alertLeft = () => {alert('left')}
   return (
       <div>
-          <Preview>
+        {info ? (
+          <div>
+            <Preview>
               <img src = {Left} style={{'width':'2%'}} onClick={alertLeft}/>
-              <Image />
+                <Image><img src = {info.files[0]} style={{'width':'100%'}}/></Image>
               <img src = {Right} style={{'width':'2%'}}/>
-          </Preview>
-          <Type>의류</Type>
-          <div><Hr /></div>
-          <div><UserBar><User>닉네임</User><Status>판매중</Status></UserBar></div>
-          <div><Title>이화 그린 학잠 판매합니다.</Title></div>
-          <div><Content>이화 그린 학잠 15000원에 판매합니다!이씨씨 사물함 거래 원해요~
-              거래 원하시는 분들은 쪽지 주세요!</Content></div>
-          <Btn>쪽지하기</Btn>
-          <Btn>목록으로</Btn>
+            </Preview>
+            <Type>{category[info.categoryID]}</Type>
+            <div><Hr /></div>
+            <div>
+                <UserBar>
+                    <User>{info.accountID}</User>
+                    {info.optionID===1?<Status>{info.price}원</Status>:<Status>판매완료</Status>}
+                </UserBar>
+            </div>
+            <div><Title>{info.title}</Title></div>
+            <div><Content>{info.content}</Content></div>
+            <Btn>쪽지하기</Btn>
+            <Btn>목록으로</Btn>
+          </div>
+        ):''}
       </div>
   );
 }
@@ -30,7 +51,7 @@ const Preview = styled.div`
 display: inline-flex;
 justify-content: center;
 width: 80%;
-margin-bottom: 2%;
+margin-bottom: 5%;
 `
 const Image = styled.div`
 width: 700px; height: 400px;
