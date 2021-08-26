@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from "../../asset/logo.PNG";
 import SearchImg from "../../asset/search.svg"
+import GoogleLoginButton from "../../pages/Login/GoogleLoginButton";
 
 function Header() {
   return (
@@ -12,7 +13,7 @@ function Header() {
             <img src={SearchImg} style={{'margin': '3%', 'width': '15px'}} />
             <Input />
         </SearchBox>
-        <LoginBtn>GOOGLE LOGIN</LoginBtn>
+        <GoogleLoginButton/>
       </HeaderBar>
   );
 }
@@ -44,13 +45,4 @@ border: none;
 &:focus { outline: none;}
 font-size: 80%; 
 width: 90%;
-`
-const LoginBtn = styled.button`
-width: 8%; padding: 1%;
-margin-right: 0.8%;
-font-size: 80%;
-cursor: pointer;
-border: none;
-background: #375945;
-color: #FFFFFF;
 `
