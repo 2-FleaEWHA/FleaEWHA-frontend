@@ -37,7 +37,7 @@ function Detail() {
               <MenuBtn>생활소품</MenuBtn>
           </MenuBar>
           <ProductList>
-              { data ? data.map((goods, i) => {
+              { data ? data.map((goods) => {
                   return (
                       <CardComponent>
                         <Card id={goods.productID} title={goods.title} price={goods.price} image={goods.files[0]} />
