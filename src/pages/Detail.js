@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Card from "../component/product/Card";
 import axios from 'axios';
+import {Link} from "react-router-dom";
 
 function Detail() {
   const [data, product] = useState();
@@ -36,7 +37,7 @@ function Detail() {
               <MenuBtn>생활소품</MenuBtn>
           </MenuBar>
           <ProductList>
-              { data ? data.map((goods, i) => {
+              { data ? data.map((goods) => {
                   return (
                       <CardComponent>
                         <Card id={goods.productID} title={goods.title} price={goods.price} image={goods.files[0]} />
@@ -44,6 +45,11 @@ function Detail() {
                   );
               }):''}
           </ProductList>
+          <div style={{'display':'inline-flex','width':'70%', 'justify-content':'flex-end'}}>
+              <Link to={`/productregister`} style={{'width':'8%'}}>
+                  <RegisterBtn>상품 등록</RegisterBtn>
+              </Link>
+          </div>
       </div>
   );
 }
@@ -90,10 +96,18 @@ color: #5B8767;
 `
 const ProductList = styled.div`
 display: inline-flex;
-flex-wrap: wrap;
 width: 70%;
 margin-bottom: 3%;
 `
 const CardComponent = styled.div`
-margin: 1.5%;
+width: 100%;
+justify-content: space-between;
+`
+const RegisterBtn = styled.button`
+width: 100%; padding: 10%;
+font-size: 80%; font-weight: bold;
+cursor: pointer;
+border: none;
+background: #375945;
+color: #FFFFFF;
 `

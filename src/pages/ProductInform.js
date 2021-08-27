@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Left from '../asset/leftCursor.svg';
@@ -17,6 +18,7 @@ function ProductInform({match}) {
             }
         }, []
     )
+    console.log(info)
   const alertLeft = () => {alert('left')}
   return (
       <div>
@@ -24,7 +26,7 @@ function ProductInform({match}) {
           <div>
             <Preview>
               <img src = {Left} style={{'width':'2%'}} onClick={alertLeft}/>
-                <Image><img src = {info.files[0]} style={{'width':'100%'}}/></Image>
+                <Image><img src={info.files?.[0]} style={{'height':'100%'}} /></Image>
               <img src = {Right} style={{'width':'2%'}}/>
             </Preview>
             <Type>{category[info.categoryID]}</Type>
@@ -38,7 +40,7 @@ function ProductInform({match}) {
             <div><Title>{info.title}</Title></div>
             <div><Content>{info.content}</Content></div>
             <Btn>쪽지하기</Btn>
-            <Btn>목록으로</Btn>
+              <Link to={`/detail`}><Btn>목록으로</Btn></Link>
           </div>
         ):''}
       </div>
