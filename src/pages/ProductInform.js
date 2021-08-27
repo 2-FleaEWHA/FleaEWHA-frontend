@@ -17,6 +17,7 @@ function ProductInform({match}) {
             }
         }, []
     )
+    console.log(info)
   const alertLeft = () => {alert('left')}
   return (
       <div>
@@ -24,7 +25,7 @@ function ProductInform({match}) {
           <div>
             <Preview>
               <img src = {Left} style={{'width':'2%'}} onClick={alertLeft}/>
-                <Image><img src = {info.files[0]} style={{'width':'100%'}}/></Image>
+                <Image><img src={info.files?.[0]} style={{'height':'100%'}} /></Image>
               <img src = {Right} style={{'width':'2%'}}/>
             </Preview>
             <Type>{category[info.categoryID]}</Type>
