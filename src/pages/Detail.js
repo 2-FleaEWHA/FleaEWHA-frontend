@@ -102,7 +102,6 @@ margin-bottom: 3%;
 const CardComponent = styled.div`
 width: 100%;
 justify-content: space-between;
-background: yellow;
 `
 const RegisterBtn = styled.button`
 width: 100%; padding: 10%;

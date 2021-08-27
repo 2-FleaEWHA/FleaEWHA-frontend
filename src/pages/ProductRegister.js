@@ -1,80 +1,95 @@
 import React, {useState} from "react";
 import styled from 'styled-components';
-import SearchImg from "../asset/search.svg";
+import axios from "axios";
 
 function ProductRegister() {
-    const [type, setType] = useState();
-    const [user, setUser] = useState(1234);
-    const [title, setTitle] = useState();
-    const [price, setPrice] = useState();
-    const [content, setContent] = useState();
-    const typeHandler = (e) => {
-        e.preventDefault();
-        setType(e.target.value);
+    const user = sessionStorage.getItem('id');
+    const [body, setBody] = useState({
+        title: '',
+        content: '',
+        categoryId: '',
+        optionId: 1,
+        price: '',
+        accountId: user
+    });
+    const [images,setImage] = useState(null);
+    const {categoryId, title, content, price} = body;
+    const bodyHandler = (e) => {
+        const {name, value} = e.target;
+        setBody({
+            ...body,
+            [name]: value
+        });
+    }
+    const numberHandler = (e) => {
+        const {name, value} = e.target;
+        setBody({
+            ...body,
+            [name]: Number(value)
+        });
+    }
+    const imageHandler = (e) => {
+        const files = e.target.files;
+        console.log(files);
+        setImage(files);
     };
-    const titleHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
-        setTitle(e.target.value);
-    };
-    const priceHandler = (e) => {
-        e.preventDefault();
-        setPrice(e.target.value);
-    };
-    const contentHandler = (e) => {
-        e.preventDefault();
-        setContent(e.target.value);
-    };
-    const submitHandler = (e) => {
-        e.preventDefault();
-        console.log(type);
-        console.log(title);
-        console.log(price);
-        console.log(content);
-        let body = {
-            title: title,
-            content: content,
-            categoryId: type,
-            optionId: 1,
-            price: price,
-            accountId: user
+        const formData = new FormData();
+        formData.append("product", body);
+        formData.append("file", images);
+        console.log(body);
+        console.log(images);
+        const config = {
+            headers: {
+                "CONTENT-TYPE": "multipart/form-data"
+            }
         };
-        console.log(body)
-        //axios
-        //    .post(`http://localhost:8080/api/${type}/${postId}/comment`, body)
+        //await axios
+        //    .post(`http://localhost:8080/new-product`, formData, config)
         //    .then((res)=>console.log(res));
     };
     return (
       <div>
           <BoardTitle>판매할 상품 등록하기</BoardTitle>
-          <form onSubmit={submitHandler}>
+          <form id='registerForm' onSubmit={submitHandler}>
               <Category>
                   카테고리
-                  <DropDown>
-                      <SortOption value={"의류"}>의류</SortOption>
-                      <SortOption value={"문구"}>문구</SortOption>
-                      <SortOption value={"가방"}>가방</SortOption>
-                      <SortOption value={"기념품"}>기념품</SortOption>
-                      <SortOption value={"공동구매"}>공동구매</SortOption>
-                      <SortOption value={"나눔"}>나눔</SortOption>
-                      <SortOption value={"생활소품"}>생활소품</SortOption>
+                  <DropDown value={categoryId} onChange={numberHandler}>
+                      <option value='none'>선택해주세요</option>
+                      <option value='1'>의류</option>
+                      <option value='2'>문구</option>
+                      <option value='3'>가방</option>
+                      <option value='4'>기념품</option>
+                      <option value='5'>공동구매</option>
+                      <option value='6'>나눔</option>
+                      <option value='7'>생활소품</option>
                   </DropDown>
               </Category>
               <TitleBox>
-                  <TitleInput value={title} onChange={titleHandler} required/>
+                  <TitleInput value={title} onChange={bodyHandler} required/>
               </TitleBox>
               <PriceBar>
                 <PriceBox>
-                    <PriceInput value={price} onChange={priceHandler} required/>
+                    <PriceInput value={price} onChange={numberHandler} required/>
                 </PriceBox>원
               </PriceBar>
               <ContentBox>
-                  <ContentInput value={content} onChange={contentHandler} required/>
+                  <ContentInput value={content} onChange={bodyHandler} required/>
               </ContentBox>
               <PicTitle>
-                  <div style={{'width': '50%'}}>등록된 사진</div>
-                  <RegisterBtn>> 사진등록하기</RegisterBtn>
+                  <div style={{'width': '50%','display':'inline-flex', 'justify-content':'flex-start', 'margin-left':'2%'}}>
+                      등록된 사진
+                  </div>
               </PicTitle>
-              <PictureBox> </PictureBox>
+              <PictureBox>
+                  <div style={{'display':'inline-flex','width':'100%','margin':'1%'}}>
+                    <ImageInput onChange={imageHandler} multiple />
+                  </div>
+                  <div>
+
+                  </div>
+              </PictureBox>
               <div style={{"display": "inline-flex", "justify-content": "flex-end", "width": "64%"}}>
                   <SubmitBtn>등록</SubmitBtn>
               </div>
@@ -99,7 +114,7 @@ color: #7D7D7D; font-size: 16px; font-weight: bold;
 margin-bottom: 1.5%;
 `
 const DropDown = styled.select.attrs({
-    name: 'sortType'
+    name: 'categoryId'
 })`
 width: 15%;
 padding: 0.5%;
@@ -108,12 +123,6 @@ font-size: 80%;
 cursor:pointer;
 &:focus {outline: none};
 margin-left: 1%;
-`
-const SortOption = styled.option.attrs({
-    value: (props) => (props.value)
-})`
-  padding: 3px;
-  font-size: 14px;
 `
 const TitleBox = styled.div`
 display: inline-flex;
@@ -140,6 +149,7 @@ border: 1px solid #000000; border-radius: 12px;
 width: 20%; margin-right: 1%;
 `
 const TitleInput = styled.input.attrs({
+    name: 'title',
     placeholder: 'Title'
 })`
 background: none; 
@@ -150,6 +160,8 @@ width: 90%;
 margin: 1%; padding-left: 1%;
 `
 const PriceInput = styled.input.attrs({
+    name: 'price',
+    type: 'number',
     placeholder: 'Price'
 })`
 background: none; 
@@ -168,6 +180,7 @@ width: 64%;
 margin-left: 10%; margin-right: 10%; margin-bottom: 1%
 `
 const ContentInput = styled.textarea.attrs({
+    name: 'content',
     placeholder: 'Contents'
 })`
 background: none;
@@ -184,20 +197,24 @@ color: #7D7D7D; font-weight: bold; font-size: 18px;
 width: 65%;
 margin-bottom: 1%;
 `
-const RegisterBtn = styled.button`
+const ImageInput = styled.input.attrs({
+    type: 'file',
+    accept: 'image/jpg,image/png,image/jpeg,image/gif'
+})`
 border: none; background: none;
 color: #A3A3A3;
-margin-left: 70%;
+margin-left: 40%;
 font-size: 80%;
 cursor: pointer;
 width: 50%;
 `
 const PictureBox = styled.div`
 display: inline-flex;
-align-items: center;
+flex-direction: column;
+align-items: flex-start;
 box-sizing: border-box;
 border: 1px solid #000000; border-radius: 12px;
-width: 64%; height: 150px;
+width: 64%;
 margin-left: 10%; margin-right: 10%; margin-bottom: 1.5%
 `
 const SubmitBtn = styled.button.attrs({

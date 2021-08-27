@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Left from '../asset/leftCursor.svg';
@@ -39,7 +40,7 @@ function ProductInform({match}) {
             <div><Title>{info.title}</Title></div>
             <div><Content>{info.content}</Content></div>
             <Btn>쪽지하기</Btn>
-            <Btn>목록으로</Btn>
+              <Link to={`/detail`}><Btn>목록으로</Btn></Link>
           </div>
         ):''}
       </div>
