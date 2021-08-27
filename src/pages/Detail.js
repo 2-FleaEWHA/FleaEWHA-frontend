@@ -96,12 +96,13 @@ color: #5B8767;
 `
 const ProductList = styled.div`
 display: inline-flex;
-flex-wrap: wrap;
 width: 70%;
 margin-bottom: 3%;
 `
 const CardComponent = styled.div`
-margin: 0.5%;
+width: 100%;
+justify-content: space-between;
+background: yellow;
 `
 const RegisterBtn = styled.button`
 width: 100%; padding: 10%;

@@ -27,7 +27,6 @@ function Card(props) {
 
 const GoodsList = styled.div`
 width: 100%;
-margin-right: 5%; 
 `
 const Image = styled.div`
 margin-bottom: 1%;
