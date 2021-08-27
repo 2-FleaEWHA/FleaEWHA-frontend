@@ -6,6 +6,7 @@ function ProductRegister() {
     const [type, setType] = useState();
     const [user, setUser] = useState(1234);
     const [title, setTitle] = useState();
+    const [price, setPrice] = useState();
     const [content, setContent] = useState();
     const typeHandler = (e) => {
         e.preventDefault();
@@ -15,6 +16,10 @@ function ProductRegister() {
         e.preventDefault();
         setTitle(e.target.value);
     };
+    const priceHandler = (e) => {
+        e.preventDefault();
+        setPrice(e.target.value);
+    };
     const contentHandler = (e) => {
         e.preventDefault();
         setContent(e.target.value);
@@ -23,11 +28,15 @@ function ProductRegister() {
         e.preventDefault();
         console.log(type);
         console.log(title);
+        console.log(price);
         console.log(content);
         let body = {
             title: title,
             content: content,
-            userId: user
+            categoryId: type,
+            optionId: 1,
+            price: price,
+            accountId: user
         };
         console.log(body)
         //axios
@@ -51,10 +60,15 @@ function ProductRegister() {
                   </DropDown>
               </Category>
               <TitleBox>
-                  <TitleInput value={title} onChange={titleHandler} />
+                  <TitleInput value={title} onChange={titleHandler} required/>
               </TitleBox>
+              <PriceBar>
+                <PriceBox>
+                    <PriceInput value={price} onChange={priceHandler} required/>
+                </PriceBox>원
+              </PriceBar>
               <ContentBox>
-                  <ContentInput value={content} onChange={contentHandler}/>
+                  <ContentInput value={content} onChange={contentHandler} required/>
               </ContentBox>
               <PicTitle>
                   <div style={{'width': '50%'}}>등록된 사진</div>
@@ -111,6 +125,20 @@ width: 64%;
 margin-left: 10%; margin-right: 10%; 
 margin-bottom: 1%;
 `
+const PriceBar = styled.div`
+display: inline-flex;
+align-items: center;
+width: 64%;
+margin-left: 10%; margin-right: 10%; 
+margin-bottom: 1%;
+`
+const PriceBox = styled.div`
+display: inline-flex;
+align-items: center;
+box-sizing: border-box;
+border: 1px solid #000000; border-radius: 12px;
+width: 20%; margin-right: 1%;
+`
 const TitleInput = styled.input.attrs({
     placeholder: 'Title'
 })`
@@ -120,6 +148,16 @@ border: none;
 font-size: 100%; 
 width: 90%;
 margin: 1%; padding-left: 1%;
+`
+const PriceInput = styled.input.attrs({
+    placeholder: 'Price'
+})`
+background: none; 
+border: none;
+&:focus { outline: none;}
+font-size: 100%; 
+width: 90%;
+margin: 2%; padding-left: 8%;
 `
 const ContentBox = styled.div`
 display: inline-flex;
