@@ -4,17 +4,18 @@ import Card from "../../component/product/Card";
 import axios from 'axios';
 import {Link} from "react-router-dom";
 
-function ProductList(props) {
+function ProductList({path}) {
     const [data, product] = useState();
     useEffect(async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/product/${props.type}?option=${props.sort}`);
+                const response = await axios.get(path);
                 product(response.data);
             } catch (e) {
                 console.log(e)
             }
         }, []
     );
+    console.log(data);
     return (
         <div>
             <Product>
