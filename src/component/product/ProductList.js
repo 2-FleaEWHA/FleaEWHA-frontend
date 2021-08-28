@@ -13,7 +13,7 @@ function ProductList({path}) {
             } catch (e) {
                 console.log(e)
             }
-        }, []
+        }, [path]
     );
     console.log(data);
     return (
