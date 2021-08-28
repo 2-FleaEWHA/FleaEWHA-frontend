@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import ProductList from "../component/product/ProductList";
-import {Link} from "react-router-dom";
 
 function Detail() {
     const [type, setType] = useState('전체');
@@ -14,7 +13,6 @@ function Detail() {
         e.preventDefault();
         setSort(e.target.value);
     };
-    console.log(type);
   return (
       <div>
           <SortBar>
