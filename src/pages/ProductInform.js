@@ -2,8 +2,9 @@ import React, {useState, useEffect} from "react";
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import Left from '../asset/leftCursor.svg';
-import Right from '../asset/rightCursor.svg';
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function ProductInform({match}) {
   const {no} = match.params;
@@ -18,17 +19,27 @@ function ProductInform({match}) {
             }
         }, []
     )
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    }
     console.log(info)
-  const alertLeft = () => {alert('left')}
   return (
       <div>
-        {info ? (
+        {info.files ? (
           <div>
-            <Preview>
-              <img src = {Left} style={{'width':'2%'}} onClick={alertLeft}/>
-                <Image><img src={info.files?.[0]} style={{'height':'100%'}} /></Image>
-              <img src = {Right} style={{'width':'2%'}}/>
-            </Preview>
+              <Wrap>
+                <StyledSlider {...settings}>
+                  {info.files.map((image) => {
+                      return (
+                          <Image><img src={image} style={{'display':'inline-flex', 'height':'100%'}} /></Image>
+                      );
+                  })}
+                </StyledSlider>
+              </Wrap>
             <Type>{category[info.categoryID]}</Type>
             <div><Hr /></div>
             <div>
@@ -49,21 +60,36 @@ function ProductInform({match}) {
 
 export default ProductInform;
 
-const Preview = styled.div`
-display: inline-flex;
-justify-content: center;
-width: 80%;
-margin-bottom: 5%;
+
+const Wrap = styled.div`
+margin: 0 auto;
+width: 700px;
+.slick-prev:before {
+  opacity: 1;
+  color: #375945;
+  left: 0;
+}
+.slick-next:before {
+  opacity: 1;
+  color: #375945;
+}`
+
+const StyledSlider = styled(Slider)`
+.slick-slide div{
+  outline: none;
+  width: 100%;
+}
+
 `
 const Image = styled.div`
-width: 700px; height: 400px;
-margin-left: 2%; margin-right: 2%;
+height: 300px;
 background: #DBDFC8;
 `
 const Type = styled.div`
 display: inline-flex;
 width: 700px;
 color: #5B8767; font-size: 16px;
+margin-top: 3%;
 `
 const Hr = styled.div`
 display: inline-flex;
