@@ -39,14 +39,14 @@ function ProductList({path}) {
 export default ProductList;
 
 const Product = styled.div`
-display: inline-flex;
-width: 70%;
-margin-bottom: 3%;
+margin: 0 15%;
+display:grid;
+grid-template-columns: repeat(4,minmax(250px,1fr));
+row-gap:40px;
+justify-items: center;
 `
 const CardComponent = styled.div`
-width: 100%;
-text-align: left;
-justify-content: space-between;
+margin: 1.5%;
 `
 const RegisterBtn = styled.button`
 width: 100%; padding: 10%;
