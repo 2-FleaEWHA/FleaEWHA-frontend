@@ -7,13 +7,13 @@ function ProductRegister() {
     const [body, setBody] = useState({
         title: '',
         content: '',
-        categoryId: '',
-        optionId: 1,
+        categoryID: '',
+        optionID: 1,
         price: '',
-        accountId: user
+        accountID: user
     });
-    const [images,setImage] = useState(null);
-    const {categoryId, title, content, price} = body;
+    const [images, setImage] = useState(null);
+    const {categoryID, title, content, price} = body;
     const bodyHandler = (e) => {
         const {name, value} = e.target;
         setBody({
@@ -28,15 +28,14 @@ function ProductRegister() {
             [name]: Number(value)
         });
     }
-    const imageHandler = (e) => {
+    const imageHandler = async(e) => {
         const files = e.target.files;
-        console.log(files);
         setImage(files);
     };
     const submitHandler = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append("product", body);
+        formData.append("product", new Blob([JSON.stringify(body)], {type: "application/json"}));
         formData.append("file", images);
         console.log(body);
         console.log(images);
@@ -45,9 +44,13 @@ function ProductRegister() {
                 "CONTENT-TYPE": "multipart/form-data"
             }
         };
-        //await axios
-        //    .post(`http://localhost:8080/new-product`, formData, config)
-        //    .then((res)=>console.log(res));
+        await axios
+            .post(`http://localhost:8080/new-product`, formData, config)
+            .then((res)=> {
+                alert('성공적으로 업로드하였습니다.')
+            }).catch(err => {
+                alert('업로드에 실패하였습니다.')
+            })
     };
     return (
       <div>
@@ -55,7 +58,7 @@ function ProductRegister() {
           <form id='registerForm' onSubmit={submitHandler}>
               <Category>
                   카테고리
-                  <DropDown value={categoryId} onChange={numberHandler}>
+                  <DropDown value={categoryID} onChange={numberHandler}>
                       <option value='none'>선택해주세요</option>
                       <option value='1'>의류</option>
                       <option value='2'>문구</option>
@@ -114,7 +117,7 @@ color: #7D7D7D; font-size: 16px; font-weight: bold;
 margin-bottom: 1.5%;
 `
 const DropDown = styled.select.attrs({
-    name: 'categoryId'
+    name: 'categoryID'
 })`
 width: 15%;
 padding: 0.5%;
