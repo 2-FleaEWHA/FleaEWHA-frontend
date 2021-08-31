@@ -12,7 +12,6 @@ function ProductRegister() {
         price: '',
         accountID: user
     });
-    const [images, setImage] = useState(null);
     const {categoryID, title, content, price} = body;
     const bodyHandler = (e) => {
         const {name, value} = e.target;
@@ -28,17 +27,14 @@ function ProductRegister() {
             [name]: Number(value)
         });
     }
-    const imageHandler = async(e) => {
-        const files = e.target.files;
-        setImage(files);
-    };
+    const FileElement = document.querySelector('#File');
     const submitHandler = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append("product", new Blob([JSON.stringify(body)], {type: "application/json"}));
-        formData.append("file", images);
-        console.log(body);
-        console.log(images);
+        for(let i = 0; i < FileElement.files.length; i++){
+            formData.append("file", FileElement.files[i]);
+        }
         const config = {
             headers: {
                 "CONTENT-TYPE": "multipart/form-data"
@@ -48,6 +44,7 @@ function ProductRegister() {
             .post(`http://localhost:8080/new-product`, formData, config)
             .then((res)=> {
                 alert('성공적으로 업로드하였습니다.')
+                window.location.replace("/detail");
             }).catch(err => {
                 alert('업로드에 실패하였습니다.')
             })
@@ -87,7 +84,7 @@ function ProductRegister() {
               </PicTitle>
               <PictureBox>
                   <div style={{'display':'inline-flex','width':'100%','margin':'1%'}}>
-                    <ImageInput onChange={imageHandler} multiple />
+                    <ImageInput type='file' id='File' name='files' multiple='multiple' />
                   </div>
                   <div>
 
@@ -201,7 +198,6 @@ width: 65%;
 margin-bottom: 1%;
 `
 const ImageInput = styled.input.attrs({
-    type: 'file',
     accept: 'image/jpg,image/png,image/jpeg,image/gif'
 })`
 border: none; background: none;
