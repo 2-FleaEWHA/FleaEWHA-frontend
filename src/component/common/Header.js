@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from "../../asset/logo.PNG";
@@ -6,12 +6,25 @@ import SearchImg from "../../asset/search.svg"
 import GoogleLoginButton from "../../pages/Login/GoogleLoginButton";
 
 function Header() {
+  const [word, setWord] = useState('전체');
+  const searchHandler = (e) => {
+      e.preventDefault();
+      setWord(e.target.value);
+  }
+  const search = () => {
+      window.location.replace(`/detail/${word}`);
+  }
+  const onKeyPress = (e) => {
+      if(e.key === 'Enter'){
+          search();
+      }
+  }
   return (
       <HeaderBar>
         <Link to={`/`} style={{'width':'15%', 'margin-left':'10%'}}><img src={Logo} style={{'width':'100%'}}/></Link>
         <SearchBox>
             <img src={SearchImg} style={{'margin': '3%', 'width': '15px'}} />
-            <Input />
+            <Input onChange={searchHandler} onKeyPress={onKeyPress}/>
         </SearchBox>
         <GoogleLoginButton/>
       </HeaderBar>
