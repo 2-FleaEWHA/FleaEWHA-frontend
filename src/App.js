@@ -9,7 +9,7 @@ import Search from './pages/Search';
 import ProductInform from './pages/ProductInform';
 import ProductRegister from './pages/ProductRegister';
 import MyPage from './pages/Login/MyPage';
-
+import Chat2 from './pages/Chat2/Chat2';
 function App() {
   return (
     <BrowserRouter>
@@ -21,6 +21,7 @@ function App() {
         <Route exact path="/productdetail/:no" component={ProductInform} />
         <Route exact path="/productregister" component={ProductRegister} />
         <Route exact path="/mypage" component={MyPage}/>
+        <Route exact path="/chat" component={Chat2}/>
       </Switch>
       <Footer />
     </BrowserRouter>

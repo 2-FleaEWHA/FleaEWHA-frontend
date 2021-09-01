@@ -38,6 +38,7 @@ function MyPage(){
             }):''
         }         
         </div>
+        <Link to='/chat'><button>채팅</button></Link>
         </>
     );
 }
