@@ -9,7 +9,7 @@ import Search from './pages/Search';
 import ProductInform from './pages/ProductInform';
 import ProductRegister from './pages/ProductRegister';
 import MyPage from './pages/Login/MyPage';
-import Chatting from './pages/Chat2/Chatting';
+import Chatting from './pages/Chat/Chatting';
 function App() {
   return (
     <BrowserRouter>
