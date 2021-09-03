@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 function ProductInform({match}) {
   const {no} = match.params;
+  const user = sessionStorage.getItem('id');
   const category = ['전체', '의류', '문구', '가방', '기념품', '공동구매', '나눔', '생활소품'];
   const [info, setInfo] = useState('전체');
   useEffect(async () => {
@@ -27,6 +28,10 @@ function ProductInform({match}) {
         slidesToScroll: 1
     }
     console.log(info)
+    const deletePost = async () => {
+        await axios.delete(`http://localhost:8080/products/${info?.productID}`);
+        window.location.replace("/detail");
+    }
   return (
       <div>
         {info.files ? (
@@ -51,7 +56,11 @@ function ProductInform({match}) {
             <div><Title>{info.title}</Title></div>
             <div><Content>{info.content}</Content></div>
             <Btn>쪽지하기</Btn>
-              <Link to={`/detail`}><Btn>목록으로</Btn></Link>
+            <Link to={`/detail`}><Btn>목록으로</Btn></Link>
+            {user === info.accountID
+                ?(<UserBtn style={{'background':'#8D192B'}} onClick={deletePost}>삭제</UserBtn>)
+                :''
+            }
           </div>
         ):''}
       </div>
@@ -132,5 +141,13 @@ font-size: 80%;
 cursor: pointer;
 border: none; border-radius: 50px;
 background: #375945;
+color: #FFFFFF;
+`
+const UserBtn = styled.button`
+width: 5%; padding: 0.6%;
+margin: 2%;
+font-size: 80%;
+cursor: pointer;
+border: none; border-radius: 50px;
 color: #FFFFFF;
 `
