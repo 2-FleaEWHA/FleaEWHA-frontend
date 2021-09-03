@@ -13,6 +13,7 @@ function Main() {
           setProduct(null); //초기화
           const response=await axios.get('http://localhost:8080/main');
           setProduct(response.data);
+          console.log(response.data);
       } catch(e){
         setError(e);
       }
@@ -27,21 +28,21 @@ function Main() {
         <div>최근 인기 상품</div>
         <Link to="/detail"><MoreButton>더보기</MoreButton></Link>
       </TopBar>
-      <ProductList>
+      <ProductList>   
         { product ? product.map((goods, i) => {
-            return (
-              <CardComponent>
-                <Card title={goods.title} price={goods.price} />
-              </CardComponent>
-            );
-        }):''}
-      </ProductList>
+            return (                 
+                <CardComponent>
+                  <Card title={goods.title} price={goods.price} image={goods.files[0]} id={goods.productID}/>
+                </CardComponent>  
+            );  
+        }):''}              
+        </ProductList >
     </div>
   );
 }
 
 const ProductList = styled.div`
-margin: 0 200px;
+margin: 0 250px;
 display:grid;
 grid-template-columns: repeat(4,minmax(250px,1fr));
 row-gap:40px;
@@ -55,7 +56,7 @@ margin: 50px 0;
 `
 const TopBar=styled.div`
 display: flex;
-margin: 30px 250px;
+margin: 30px 350px;
 justify-content: space-between;
 font-weight:bold;
 `
