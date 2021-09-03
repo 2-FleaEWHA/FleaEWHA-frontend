@@ -1,21 +1,21 @@
 import Axios from "axios";
 
 const api = Axios.create({
-  baseURL: "/api/",
+  baseURL: "http://localhost:8080/kafka",
 });
 
 const chatAPI = {
-//   getMessages: (groupId) => {
-//     console.log("Calling get messages from API");
-//     return api.get(`/messages/${groupId}`);
-//   },
+  getMessages: (groupId) => {
+    console.log("Calling get messages from API");
+    return api.get(`/messages/${groupId}`);
+  },
 
   sendMessage: (username, text) => {
     let msg = {
       author: username,
       content: text,
     };
-    return api.post(`/message`, msg, {
+    return api.post(`/publish`, msg, {
       headers: { "Content-Type": "application/json" },
     });
   },

@@ -1,0 +1,30 @@
+
+.message-send{
+    flex-direction: row-reverse;
+    text-align: right;
+}
+.message-send p{
+    background-color:rgba(91, 135, 103, 0.45);
+    padding: 10px;
+    max-width: 400px;
+    margin: 0;
+    border-radius: 12px;
+    color: rgb(90, 90, 90);
+    display: inline-block;
+}
+.message-receive{
+    flex-direction: row-reverse;
+    text-align: left;
+}
+.message-receive p{
+    background-color: #DBDFC8;
+    padding: 10px;
+    max-width: 400px;
+    margin: 0;
+    border-radius: 12px;
+    color: rgb(90, 90, 90);
+    display: inline-block;
+}
+li{
+    list-style:none;
+}
