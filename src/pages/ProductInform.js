@@ -31,7 +31,7 @@ function ProductInform({match}) {
     const deletePost = async () => {
       if(window.confirm('해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.')) {
           await axios.delete(`http://localhost:8080/products/${info?.productID}`);
-          alert('게시물이 삭제되었습니다.')
+          alert('게시물이 삭제되었습니다.');
           return window.location.href = "/detail";
       }
     }
@@ -72,7 +72,9 @@ function ProductInform({match}) {
                   :''
               }
             <div>
-                <Btn>쪽지하기</Btn>
+                {user === info.accountID
+                ? ''
+                : <Btn>쪽지하기</Btn>}
                 <Link to={`/detail`}><Btn>목록으로</Btn></Link>
             </div>
 
@@ -83,7 +85,6 @@ function ProductInform({match}) {
 }
 
 export default ProductInform;
-
 
 const Wrap = styled.div`
 margin: 0 auto;
@@ -96,14 +97,13 @@ width: 700px;
 .slick-next:before {
   opacity: 1;
   color: #375945;
-}`
-
+}
+`
 const StyledSlider = styled(Slider)`
 .slick-slide div{
   outline: none;
   width: 100%;
 }
-
 `
 const Image = styled.div`
 height: 300px;
