@@ -5,12 +5,16 @@ import axios from 'axios';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import CommentInput from './Comment/CommentInput';
+import Comment from './Comment/Comment';
 function ProductInform({match}) {
   const {no} = match.params;
   const user = sessionStorage.getItem('id');
+  const nickname=sessionStorage.getItem('name');
   const category = ['전체', '의류', '문구', '가방', '기념품', '공동구매', '나눔', '생활소품'];
   const [info, setInfo] = useState('전체');
+  const [comments, setComment]=useState('');
+
   useEffect(async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/products/${no}`);
@@ -20,6 +24,16 @@ function ProductInform({match}) {
             }
         }, []
     )
+    useEffect(async () => {
+      try {
+          const response = await axios.get(`http://localhost:8080/products/70/comment`);
+          setComment(response.data);
+      } catch (e) {
+          console.log(e)
+      }
+  }, []
+)
+console.log(comments);
     const settings = {
         dots: true,
         infinite: true,
@@ -31,7 +45,8 @@ function ProductInform({match}) {
     const deletePost = async () => {
         await axios.delete(`http://localhost:8080/products/${info?.productID}`);
         window.location.replace("/detail");
-    }
+    }    
+
   return (
       <div>
         {info.files ? (
@@ -63,6 +78,18 @@ function ProductInform({match}) {
             }
           </div>
         ):''}
+            <div>
+              <div>
+                {comments?comments.map((comment)=>{
+                  return(
+                    <Comment comment={comment} user={nickname}></Comment>
+                  )
+                }): '아직 댓글이 등록되지 않았습니다.'}
+              </div>
+              {user !== null ? (<CommentInput productID={info.productID} user={nickname}></CommentInput>
+            ):'로그인 후 이용해주세요.'} 
+            </div>
+         
       </div>
   );
 }
