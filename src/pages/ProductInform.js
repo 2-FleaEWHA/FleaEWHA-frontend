@@ -26,56 +26,46 @@ function ProductInform({match}) {
         }, []
     )
     useEffect(async () => {
-      getComment();
-  }, []
-)
-    const getComment=async()=>{
       try {
         const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
         setComment(response.data);
     } catch (e) {
         console.log(e)
     }
-    }
-    /*댓글*/
-    const onChange = (e) => {
-      setText(e.currentTarget.value);
-    }
-    const onSubmit = async (e) => {
-      e.preventDefault();
-      const config = {
-          headers: {
-              "Content-Type": "application/json",
-          }
-      };
-      const formData=new FormData();
-      formData.append("content", text);
-      formData.append("name", nickname);
-      await axios.post(`http://localhost:8080/products/${no}/comment/write`, 
-      formData, config)
-      .then(response => {
-          console.log(response);
-          getComment();
-      }).catch(e=>{
-          console.log(e);
-      })
-      setText('');
-    }
-    const deleteComment=async(comment)=>{
-      const formData=new FormData();
-      console.log(comment);
-      formData.append("comment", comment);
-      await axios.delete(`http://localhost:8080/products/${no}/comment/delete`, comment, {headers:{"Access-Control-Allow-Origin": "*"}});
-      setComment(comments.filter(c => c.commentID !== comment.commentID));
-    }
-    const updateComment=async(comment)=>{
-      const formData=new FormData();
-      formData.append("comment", comment);
-      console.log(comment);
-      await axios.put(`http://localhost:8080/products/${no}/comment/update`, comment, {headers:{"Access-Control-Allow-Origin": "*"}});
-    }
-
-    console.log(comments);
+  }, []
+)
+const getComment=async()=>{
+  try {
+    const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
+    setComment(response.data);
+} catch (e) {
+    console.log(e)
+}
+}
+/*댓글*/
+const onChange = (e) => {
+  setText(e.currentTarget.value);
+}
+const onSubmit = async (e) => {
+  e.preventDefault();
+  const config = {
+      headers: {
+          "Content-Type": "application/json",
+      }
+  };
+  const formData=new FormData();
+  formData.append("content", text);
+  formData.append("name", nickname);
+  await axios.post(`http://localhost:8080/products/${no}/comment/write`, 
+  formData, config)
+  .then(response => {
+      console.log(response);
+      getComment();
+  }).catch(e=>{
+      console.log(e);
+  })
+  setText('');
+}
     const settings = {
         dots: true,
         infinite: true,
@@ -125,18 +115,15 @@ function ProductInform({match}) {
                 {comments?comments.map((comment)=>{
                   return(
                     <>
-                    <Comment content={comment.content} writer={comment.writer}></Comment>
-                    <button onClick={()=>deleteComment(comment)}>삭제하기</button>
-                    <button onClick={()=>updateComment(comment)}>수정하기</button>
-                    {openReply? <> 
-               <Input placeholder="댓글을 입력해주세요"onChange={onChange} value={text}></Input>
-              <SubmitButton onClick={onSubmit}></SubmitButton>
-              </> : ''}
+                    <Comment productID={info.productID}comment={comment}></Comment>
+                    
                     </>
                   )
                 }): '아직 댓글이 등록되지 않았습니다.'}
+                
               </div>
-              {user !== null ? (<> 
+              <div>
+              {nickname !== null ? (<> 
                <Input
             placeholder="댓글을 입력해주세요"
             onChange={onChange}
@@ -146,9 +133,9 @@ function ProductInform({match}) {
         <SubmitButton onClick={onSubmit}></SubmitButton>
               </>)
             :'로그인 후 이용해주세요.'} 
-            </div>
-         
-      </div>
+              </div>
+              </div>
+              </div>
   );
 }
 
