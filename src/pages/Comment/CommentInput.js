@@ -2,45 +2,27 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-function CommentInput(props){
+function CommentInput(props, {comments, setComment}){
     const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    const nickname=sessionStorage.getItem('name');
     const [text, setText]=useState('');
-    const [comment, setComment]=useState({
-        commentID:1,
-        productID:1,
-        content:'',
-        createTime:'',
-        writer:'',
-        reply:0,
-        groupID:1 //대댓글이 속한 댓글
-    })
-    
     const onChange = (e) => {
         setText(e.currentTarget.value);
     }
     const onSubmit = async (e) => {
         e.preventDefault();
-        setComment({
-            commentID:1,
-            productID:props.productID,
-            content:text,
-            createTime:nowTime,
-            writer:props.user,
-            reply:0,
-            groupID:1 //대댓글이 속한 댓글
-        })
         const config = {
             headers: {
                 "Content-Type": "application/json",
             }
         };
-        console.log("댓글", comment);
-        const  formData=new FormData();
+        const formData=new FormData();
         formData.append("content", text);
         await axios.post(`http://localhost:8080/products/${props.productID}/comment/write`, 
         formData, config)
         .then(response => {
             console.log(response);
+            setComment({"content": text, "writer":nickname})
         }).catch(e=>{
             console.log(e);
         })

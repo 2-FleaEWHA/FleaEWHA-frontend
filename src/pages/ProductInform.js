@@ -14,7 +14,8 @@ function ProductInform({match}) {
   const category = ['전체', '의류', '문구', '가방', '기념품', '공동구매', '나눔', '생활소품'];
   const [info, setInfo] = useState('전체');
   const [comments, setComment]=useState('');
-
+  const [text, setText]=useState('');
+  const [openReply, setOpenReply] = useState(false);
   useEffect(async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/products/${no}`);
@@ -25,15 +26,56 @@ function ProductInform({match}) {
         }, []
     )
     useEffect(async () => {
-      try {
-          const response = await axios.get(`http://localhost:8080/products/70/comment`);
-          setComment(response.data);
-      } catch (e) {
-          console.log(e)
-      }
+      getComment();
   }, []
 )
-console.log(comments);
+    const getComment=async()=>{
+      try {
+        const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
+        setComment(response.data);
+    } catch (e) {
+        console.log(e)
+    }
+    }
+    /*댓글*/
+    const onChange = (e) => {
+      setText(e.currentTarget.value);
+    }
+    const onSubmit = async (e) => {
+      e.preventDefault();
+      const config = {
+          headers: {
+              "Content-Type": "application/json",
+          }
+      };
+      const formData=new FormData();
+      formData.append("content", text);
+      formData.append("name", nickname);
+      await axios.post(`http://localhost:8080/products/${no}/comment/write`, 
+      formData, config)
+      .then(response => {
+          console.log(response);
+          getComment();
+      }).catch(e=>{
+          console.log(e);
+      })
+      setText('');
+    }
+    const deleteComment=async(comment)=>{
+      const formData=new FormData();
+      console.log(comment);
+      formData.append("comment", comment);
+      await axios.delete(`http://localhost:8080/products/${no}/comment/delete`, comment, {headers:{"Access-Control-Allow-Origin": "*"}});
+      setComment(comments.filter(c => c.commentID !== comment.commentID));
+    }
+    const updateComment=async(comment)=>{
+      const formData=new FormData();
+      formData.append("comment", comment);
+      console.log(comment);
+      await axios.put(`http://localhost:8080/products/${no}/comment/update`, comment, {headers:{"Access-Control-Allow-Origin": "*"}});
+    }
+
+    console.log(comments);
     const settings = {
         dots: true,
         infinite: true,
@@ -82,12 +124,28 @@ console.log(comments);
               <div>
                 {comments?comments.map((comment)=>{
                   return(
-                    <Comment comment={comment} user={nickname}></Comment>
+                    <>
+                    <Comment content={comment.content} writer={comment.writer}></Comment>
+                    <button onClick={()=>deleteComment(comment)}>삭제하기</button>
+                    <button onClick={()=>updateComment(comment)}>수정하기</button>
+                    {openReply? <> 
+               <Input placeholder="댓글을 입력해주세요"onChange={onChange} value={text}></Input>
+              <SubmitButton onClick={onSubmit}></SubmitButton>
+              </> : ''}
+                    </>
                   )
                 }): '아직 댓글이 등록되지 않았습니다.'}
               </div>
-              {user !== null ? (<CommentInput productID={info.productID} user={nickname}></CommentInput>
-            ):'로그인 후 이용해주세요.'} 
+              {user !== null ? (<> 
+               <Input
+            placeholder="댓글을 입력해주세요"
+            onChange={onChange}
+            value={text}
+            >
+        </Input>
+        <SubmitButton onClick={onSubmit}></SubmitButton>
+              </>)
+            :'로그인 후 이용해주세요.'} 
             </div>
          
       </div>
@@ -176,5 +234,26 @@ margin: 2%;
 font-size: 80%;
 cursor: pointer;
 border: none; border-radius: 50px;
+color: #FFFFFF;
+`
+
+const Input=styled.input`
+width: 892px;
+height: 121px;
+font-size: 20px;
+background: #FFFFFF;
+border: 1px solid #000000;
+box-sizing: border-box;
+border-radius: 21px;
+`
+
+const SubmitButton=styled.button`
+width: 85px;
+height: 43px;
+background: rgba(91, 135, 103, 0.74);
+border-style:none;
+border-radius:10px;
+margin-left:20px;
+line-height: 30px;
 color: #FFFFFF;
 `

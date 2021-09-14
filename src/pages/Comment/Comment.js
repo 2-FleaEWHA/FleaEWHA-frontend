@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-function Comment({comment, user}){
+function Comment({content, writer}){
     const formattingTimestamp = (timestamp) => {
         const date = new Date(timestamp);
         let hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
@@ -11,8 +11,8 @@ function Comment({comment, user}){
       return(
           <>
           <CommentBox>
-            <User>{user}</User>
-            <Content>{comment.content}</Content>
+            <User>{writer}}</User>
+            <Content>{content}</Content>
           </CommentBox>
           {/* <span>{formattingTimestamp(comment.createTime)}</span> */}
         </>
