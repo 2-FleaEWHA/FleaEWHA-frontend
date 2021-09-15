@@ -5,7 +5,6 @@ import axios from 'axios';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import CommentInput from './Comment/CommentInput';
 import Comment from './Comment/Comment';
 function ProductInform({match}) {
   const {no} = match.params;
@@ -15,7 +14,6 @@ function ProductInform({match}) {
   const [info, setInfo] = useState('전체');
   const [comments, setComment]=useState('');
   const [text, setText]=useState('');
-  const [openReply, setOpenReply] = useState(false);
   useEffect(async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/products/${no}`);
@@ -23,17 +21,17 @@ function ProductInform({match}) {
             } catch (e) {
                 console.log(e)
             }
-        }, []
+        },[]
+        
     )
-    useEffect(async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
-        setComment(response.data);
-    } catch (e) {
-        console.log(e)
-    }
-  }, []
-)
+useEffect(async()=>{
+  try {
+    const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
+    setComment(response.data);
+} catch (e) {
+    console.log(e)
+}
+})
 const getComment=async()=>{
   try {
     const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
@@ -116,7 +114,6 @@ const onSubmit = async (e) => {
                   return(
                     <>
                     <Comment productID={info.productID}comment={comment}></Comment>
-                    
                     </>
                   )
                 }): '아직 댓글이 등록되지 않았습니다.'}
@@ -225,13 +222,14 @@ color: #FFFFFF;
 `
 
 const Input=styled.input`
-width: 892px;
-height: 121px;
+width: 800px;
+height: 120px;
 font-size: 20px;
 background: #FFFFFF;
 border: 1px solid #000000;
 box-sizing: border-box;
 border-radius: 21px;
+margin-top:100px;
 `
 
 const SubmitButton=styled.button`
