@@ -21,17 +21,21 @@ function ProductInform({match}) {
             } catch (e) {
                 console.log(e)
             }
-        },[]
-        
-    )
-useEffect(async()=>{
-  try {
+        try {
+          const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
+          setComment(response.data);
+      } catch (e) {
+          console.log(e)
+      }
+    }, []  
+  )
+  useEffect(async ()=>{
+    try {
     const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
     setComment(response.data);
 } catch (e) {
     console.log(e)
-}
-})
+}}, [comments]);
 const getComment=async()=>{
   try {
     const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
@@ -43,6 +47,19 @@ const getComment=async()=>{
 /*댓글*/
 const onChange = (e) => {
   setText(e.currentTarget.value);
+}
+const deleteComment=async(comment)=>{
+  const formData=new FormData();
+  console.log(comment);
+  formData.append("commentID", comment.commentID);
+  await axios.delete(`http://localhost:8080/products/${no}/comment/delete`, {data:formData})
+  .then(response=>{
+    console.log(response);
+    setComment(comments.filter(c => c.commentID !== comment.commentID));
+  }).catch(e=>{
+    console.log(e);
+  })
+  
 }
 const onSubmit = async (e) => {
   e.preventDefault();
@@ -57,7 +74,6 @@ const onSubmit = async (e) => {
   await axios.post(`http://localhost:8080/products/${no}/comment/write`, 
   formData, config)
   .then(response => {
-      console.log(response);
       getComment();
   }).catch(e=>{
       console.log(e);
@@ -71,7 +87,6 @@ const onSubmit = async (e) => {
         slidesToShow: 1,
         slidesToScroll: 1
     }
-    console.log(info)
     const deletePost = async () => {
         await axios.delete(`http://localhost:8080/products/${info?.productID}`);
         window.location.replace("/detail");
@@ -113,7 +128,7 @@ const onSubmit = async (e) => {
                 {comments?comments.map((comment)=>{
                   return(
                     <>
-                    <Comment productID={info.productID}comment={comment}></Comment>
+                    <Comment productID={info.productID}comment={comment} deleteComment={deleteComment}></Comment>
                     </>
                   )
                 }): '아직 댓글이 등록되지 않았습니다.'}
@@ -127,7 +142,7 @@ const onSubmit = async (e) => {
             value={text}
             >
         </Input>
-        <SubmitButton onClick={onSubmit}></SubmitButton>
+        <SubmitButton onClick={onSubmit}>SEND</SubmitButton>
               </>)
             :'로그인 후 이용해주세요.'} 
               </div>
@@ -226,9 +241,8 @@ width: 800px;
 height: 120px;
 font-size: 20px;
 background: #FFFFFF;
-border: 1px solid #000000;
+border: 1px solid gray;
 box-sizing: border-box;
-border-radius: 21px;
 margin-top:100px;
 `
 

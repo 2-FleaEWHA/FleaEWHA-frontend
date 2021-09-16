@@ -1,9 +1,8 @@
 import React, {useState, useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-function Comment({productID, comment}){
+function Comment({productID, comment, deleteComment}){
   const ref = useRef(null);
-  const [reply, setReply]=useState('');
   const [comments, setComment]=useState('');
   const [text, setText]=useState('');
   const nickname=sessionStorage.getItem('name');
@@ -14,7 +13,6 @@ function Comment({productID, comment}){
     try {
       const response = await axios.get(`http://localhost:8080/products/${productID}/comment`);
       setComment(response.data);
-      setReply(response.data);
   } catch (e) {
       console.log(e)
   }
@@ -23,19 +21,6 @@ function Comment({productID, comment}){
   const onChange = (e) => {
     setText(e.currentTarget.value);
     console.log(text);
-  }
-  const deleteComment=async(comment)=>{
-    const formData=new FormData();
-    console.log(comment);
-    formData.append("commentID", comment.commentID);
-    await axios.delete(`http://localhost:8080/products/${productID}/comment/delete`, formData)
-    .then(response=>{
-      console.log(response);
-      setComment(comments.filter(c => c.commentID !== comment.commentID));
-    }).catch(e=>{
-      console.log(e);
-    })
-    
   }
   const clickUpdate=()=>{
     setOpenUpdate(!openUpdate);
@@ -73,7 +58,6 @@ function Comment({productID, comment}){
     await axios.post(`http://localhost:8080/products/${productID}/comment/reply`, formData, config)
     .then(response => {
         console.log(response);
-        setOpenReply(!openReply);
         getComment();
     }).catch(e=>{
         console.log(e);
@@ -83,23 +67,31 @@ function Comment({productID, comment}){
       return(
           <>
           <CommentBox>
-            <div ref={ref}>
               {openUpdate? <div> 
                 <Input onChange={onChange} value={text}></Input>
                 <SubmitButton onClick={()=>updateComment(comment)}></SubmitButton>
-                </div>: <> {comment.reply===1? <p>[답댓글]</p> : ''} 
+                </div>: <> {comment.reply===1? <p>[답댓글]</p> : ''}
+                <div>
                 <User>{comment.writer}</User>
-                <Content>{comment.content}</Content></>
+                <Content>{comment.content}</Content>
+                </div>
+                </>
               }
-            </div>
-            <button onClick={clickReply}>답글 달기</button>
-            <button onClick={()=>deleteComment(comment)}>삭제하기</button>
-            <button onClick={clickUpdate}>수정하기</button>
+            {nickname!==null?(<CommentButton onClick={clickReply}>답글 달기</CommentButton>):''}
+            {comment.writer===nickname?
+            <>
+            <CommentButton onClick={()=>deleteComment(comment)}>삭제하기</CommentButton>
+            <CommentButton onClick={clickUpdate}>수정하기</CommentButton>
+            </> : ''
+          }
+            
+                      
+            </CommentBox>
                {openReply? <div> 
                <Input placeholder="답댓글을 입력해주세요"onChange={onChange} value={text} style={{'marginLeft':'200px'}}></Input>
-              <SubmitButton onClick={()=>replyComment(comment)}></SubmitButton>
+              <SubmitButton onClick={()=>replyComment(comment)}>SEND</SubmitButton>
               </div> : ''}
-          </CommentBox>
+
         </>
       )
     
@@ -107,20 +99,30 @@ function Comment({productID, comment}){
 export default Comment;
 
 const CommentBox=styled.div`
-
+display: flex;
+justify-content: center;
+align-items: center;
+width: fit-content;
+margin: auto;
+padding: 20px;
+border-bottom: 2px solid #375945;
 `
 
-const Content=styled.div``
+const Content=styled.div`
+font-size:16px;
+`
 
-const User=styled.div``
+const User=styled.div`
+font-size:16px;
+font-weight:700;
+`
 const Input=styled.input`
 width: 800px;
-height: 100px;
+height: 120px;
 font-size: 20px;
 background: #FFFFFF;
-border: 1px solid #000000;
+border: 1px solid gray;
 box-sizing: border-box;
-border-radius: 21px;
 `
 
 const SubmitButton=styled.button`
@@ -132,4 +134,14 @@ border-radius:10px;
 margin-left:20px;
 line-height: 30px;
 color: #FFFFFF;
+`
+
+const CommentButton=styled.button`
+border: none;
+background-color: rgba(91, 135, 103, 0.74);
+height: 30px;
+border-radius: 10px;
+cursor: pointer;
+color: white;
+margin-left:10px;
 `
