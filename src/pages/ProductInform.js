@@ -5,12 +5,15 @@ import axios from 'axios';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import Comment from './Comment/Comment';
 function ProductInform({match}) {
   const {no} = match.params;
   const user = sessionStorage.getItem('id');
+  const nickname=sessionStorage.getItem('name');
   const category = ['전체', '의류', '문구', '가방', '기념품', '공동구매', '나눔', '생활소품'];
   const [info, setInfo] = useState('전체');
+  const [comments, setComment]=useState('');
+  const [text, setText]=useState('');
   useEffect(async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/products/${no}`);
@@ -18,8 +21,65 @@ function ProductInform({match}) {
             } catch (e) {
                 console.log(e)
             }
-        }, []
-    )
+        try {
+          const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
+          setComment(response.data);
+      } catch (e) {
+          console.log(e)
+      }
+    }, []  
+  )
+  useEffect(async ()=>{
+    try {
+    const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
+    setComment(response.data);
+} catch (e) {
+    console.log(e)
+}}, [comments]);
+const getComment=async()=>{
+  try {
+    const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
+    setComment(response.data);
+} catch (e) {
+    console.log(e)
+}
+}
+/*댓글*/
+const onChange = (e) => {
+  setText(e.currentTarget.value);
+}
+const deleteComment=async(comment)=>{
+  const formData=new FormData();
+  console.log(comment);
+  formData.append("commentID", comment.commentID);
+  await axios.delete(`http://localhost:8080/products/${no}/comment/delete`, {data:formData})
+  .then(response=>{
+    console.log(response);
+    setComment(comments.filter(c => c.commentID !== comment.commentID));
+  }).catch(e=>{
+    console.log(e);
+  })
+  
+}
+const onSubmit = async (e) => {
+  e.preventDefault();
+  const config = {
+      headers: {
+          "Content-Type": "application/json",
+      }
+  };
+  const formData=new FormData();
+  formData.append("content", text);
+  formData.append("name", nickname);
+  await axios.post(`http://localhost:8080/products/${no}/comment/write`, 
+  formData, config)
+  .then(response => {
+      getComment();
+  }).catch(e=>{
+      console.log(e);
+  })
+  setText('');
+}
     const settings = {
         dots: true,
         infinite: true,
@@ -27,7 +87,6 @@ function ProductInform({match}) {
         slidesToShow: 1,
         slidesToScroll: 1
     }
-    console.log(info)
     const deletePost = async () => {
       if(window.confirm('해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.')) {
           await axios.delete(`http://localhost:8080/products/${info?.productID}`);
@@ -80,7 +139,31 @@ function ProductInform({match}) {
 
           </div>
         ):''}
-      </div>
+            <div>
+              <div>
+                {comments?comments.map((comment)=>{
+                  return(
+                    <>
+                    <Comment productID={info.productID}comment={comment} deleteComment={deleteComment}></Comment>
+                    </>
+                  )
+                }): '아직 댓글이 등록되지 않았습니다.'}
+                
+              </div>
+              <div>
+              {nickname !== null ? (<> 
+               <Input
+            placeholder="댓글을 입력해주세요"
+            onChange={onChange}
+            value={text}
+            >
+        </Input>
+        <SubmitButton onClick={onSubmit}>SEND</SubmitButton>
+              </>)
+            :'로그인 후 이용해주세요.'} 
+              </div>
+              </div>
+              </div>
   );
 }
 
@@ -164,5 +247,26 @@ margin: 1%;
 font-size: 80%;
 cursor: pointer;
 border: none; border-radius: 5px;
+color: #FFFFFF;
+`
+
+const Input=styled.input`
+width: 800px;
+height: 120px;
+font-size: 20px;
+background: #FFFFFF;
+border: 1px solid gray;
+box-sizing: border-box;
+margin-top:100px;
+`
+
+const SubmitButton=styled.button`
+width: 85px;
+height: 43px;
+background: rgba(91, 135, 103, 0.74);
+border-style:none;
+border-radius:10px;
+margin-left:20px;
+line-height: 30px;
 color: #FFFFFF;
 `
