@@ -21,13 +21,7 @@ function ProductInform({match}) {
             } catch (e) {
                 console.log(e)
             }
-        try {
-          const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
-          setComment(response.data);
-      } catch (e) {
-          console.log(e)
-      }
-    }, []  
+          }, []  
   )
   useEffect(async ()=>{
     try {
