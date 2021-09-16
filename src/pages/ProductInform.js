@@ -88,10 +88,16 @@ const onSubmit = async (e) => {
         slidesToScroll: 1
     }
     const deletePost = async () => {
-        await axios.delete(`http://localhost:8080/products/${info?.productID}`);
-        window.location.replace("/detail");
-    }    
-
+      if(window.confirm('해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.')) {
+          await axios.delete(`http://localhost:8080/products/${info?.productID}`);
+          alert('게시물이 삭제되었습니다.');
+          return window.location.href = "/detail";
+      }
+    }
+    const editPost = async () => {
+        localStorage.setItem("data", JSON.stringify(info));
+        return window.location.href = `/edit/${info.productID}`;
+    }
   return (
       <div>
         {info.files ? (
@@ -115,12 +121,22 @@ const onSubmit = async (e) => {
             </div>
             <div><Title>{info.title}</Title></div>
             <div><Content>{info.content}</Content></div>
-            <Btn>쪽지하기</Btn>
-            <Link to={`/detail`}><Btn>목록으로</Btn></Link>
-            {user === info.accountID
-                ?(<UserBtn style={{'background':'#8D192B'}} onClick={deletePost}>삭제</UserBtn>)
-                :''
-            }
+              {user === info.accountID
+                  ?(
+                      <div style={{'display': 'inline-flex', 'width':'700px', 'justify-content':'flex-end'}}>
+                          <UserBtn style={{'background':'#0080FF'}} onClick={editPost}>수정</UserBtn>
+                          <UserBtn style={{'background':'#8D192B'}} onClick={deletePost}>삭제</UserBtn>
+                      </div>
+                  )
+                  :''
+              }
+            <div>
+                {user === info.accountID
+                ? ''
+                : <Btn>쪽지하기</Btn>}
+                <Link to={`/detail`}><Btn>목록으로</Btn></Link>
+            </div>
+
           </div>
         ):''}
             <div>
@@ -153,7 +169,6 @@ const onSubmit = async (e) => {
 
 export default ProductInform;
 
-
 const Wrap = styled.div`
 margin: 0 auto;
 width: 700px;
@@ -165,14 +180,13 @@ width: 700px;
 .slick-next:before {
   opacity: 1;
   color: #375945;
-}`
-
+}
+`
 const StyledSlider = styled(Slider)`
 .slick-slide div{
   outline: none;
   width: 100%;
 }
-
 `
 const Image = styled.div`
 height: 300px;
@@ -228,11 +242,11 @@ background: #375945;
 color: #FFFFFF;
 `
 const UserBtn = styled.button`
-width: 5%; padding: 0.6%;
-margin: 2%;
+width: 8%; padding: 0.5%;
+margin: 1%;
 font-size: 80%;
 cursor: pointer;
-border: none; border-radius: 50px;
+border: none; border-radius: 5px;
 color: #FFFFFF;
 `
 

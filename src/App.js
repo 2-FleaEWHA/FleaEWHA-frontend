@@ -8,6 +8,7 @@ import Detail from './pages/Detail';
 import Search from './pages/Search';
 import ProductInform from './pages/ProductInform';
 import ProductRegister from './pages/ProductRegister';
+import ProductEdit from './pages/ProductEdit';
 import MyPage from './pages/Login/MyPage';
 import Chatting from './pages/Chat/Chatting';
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/detail/:keyword" component={Search} />
         <Route exact path="/productdetail/:no" component={ProductInform} />
         <Route exact path="/productregister" component={ProductRegister} />
+        <Route exact path="/edit/:productID" component={ProductEdit} />
         <Route exact path="/mypage" component={MyPage}/>
         <Route exact path="/chatting" component={Chatting}/>
       </Switch>
