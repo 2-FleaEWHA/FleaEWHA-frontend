@@ -6,6 +6,7 @@ function Comment({productID, comment, deleteComment}){
   const [comments, setComment]=useState('');
   const [text, setText]=useState('');
   const nickname=sessionStorage.getItem('name');
+  const writerID=sessionStorage.getItem('id');
   const [openReply, setOpenReply] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
 
@@ -55,6 +56,7 @@ function Comment({productID, comment, deleteComment}){
     formData.append("content", text);
     formData.append("groupID", comment.groupID);
     formData.append("name", nickname);
+    formData.append("id", writerID);
     await axios.post(`http://localhost:8080/products/${productID}/comment/reply`, formData, config)
     .then(response => {
         console.log(response);

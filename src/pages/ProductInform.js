@@ -65,6 +65,7 @@ const onSubmit = async (e) => {
   const formData=new FormData();
   formData.append("content", text);
   formData.append("name", nickname);
+  formData.append("id", user);
   await axios.post(`http://localhost:8080/products/${no}/comment/write`, 
   formData, config)
   .then(response => {
