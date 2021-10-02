@@ -18,13 +18,12 @@ function GoogleLoginButton(props){
     const onSuccess = async(response) => {
         setLoginState(true);
         const { googleId, profileObj : { email, name} } = response;
+        const formData=new FormData();
+        formData.append('id', googleId);
+        formData.append('name',name);
+        formData.append('email',email);
         try {
-            const user = await axios.post('/login', null, {params:{
-                'id':googleId,
-                'name':name,            
-                'email':email,
-                }
-            });
+            const user = await axios.post('/login', formData,);
             console.log(user);
         } catch (e){
             console.log(e);

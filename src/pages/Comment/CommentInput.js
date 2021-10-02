@@ -22,7 +22,7 @@ function CommentInput(props, {comments, setComment}){
         formData, config)
         .then(response => {
             console.log(response);
-            setComment({"content": text, "writer":nickname})
+            setComment({"content": text, "name":nickname})
         }).catch(e=>{
             console.log(e);
         })

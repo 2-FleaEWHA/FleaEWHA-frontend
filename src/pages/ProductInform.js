@@ -29,7 +29,7 @@ function ProductInform({match}) {
     setComment(response.data);
 } catch (e) {
     console.log(e)
-}}, [comments]);
+}}, []);
 const getComment=async()=>{
   try {
     const response = await axios.get(`http://localhost:8080/products/${no}/comment`);
