@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/FleaEWHA-frontend/static/css/main.680c8c20.chunk.css",
+    "main.js": "/FleaEWHA-frontend/static/js/main.24bff574.chunk.js",
+    "main.js.map": "/FleaEWHA-frontend/static/js/main.24bff574.chunk.js.map",
+    "runtime-main.js": "/FleaEWHA-frontend/static/js/runtime-main.8789b391.js",
+    "runtime-main.js.map": "/FleaEWHA-frontend/static/js/runtime-main.8789b391.js.map",
+    "static/css/2.bdfb238c.chunk.css": "/FleaEWHA-frontend/static/css/2.bdfb238c.chunk.css",
+    "static/js/2.0fc9eda1.chunk.js": "/FleaEWHA-frontend/static/js/2.0fc9eda1.chunk.js",
+    "static/js/2.0fc9eda1.chunk.js.map": "/FleaEWHA-frontend/static/js/2.0fc9eda1.chunk.js.map",
+    "index.html": "/FleaEWHA-frontend/index.html",
+    "static/css/2.bdfb238c.chunk.css.map": "/FleaEWHA-frontend/static/css/2.bdfb238c.chunk.css.map",
+    "static/css/main.680c8c20.chunk.css.map": "/FleaEWHA-frontend/static/css/main.680c8c20.chunk.css.map",
+    "static/js/2.0fc9eda1.chunk.js.LICENSE.txt": "/FleaEWHA-frontend/static/js/2.0fc9eda1.chunk.js.LICENSE.txt",
+    "static/media/banner.63a88f61.svg": "/FleaEWHA-frontend/static/media/banner.63a88f61.svg",
+    "static/media/basicImg.c6c8e824.svg": "/FleaEWHA-frontend/static/media/basicImg.c6c8e824.svg",
+    "static/media/logo.cd884278.PNG": "/FleaEWHA-frontend/static/media/logo.cd884278.PNG",
+    "static/media/search.bf58153c.svg": "/FleaEWHA-frontend/static/media/search.bf58153c.svg",
+    "static/media/slick-theme.css": "/FleaEWHA-frontend/static/media/slick.c94f7671.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8789b391.js",
+    "static/css/2.bdfb238c.chunk.css",
+    "static/js/2.0fc9eda1.chunk.js",
+    "static/css/main.680c8c20.chunk.css",
+    "static/js/main.24bff574.chunk.js"
+  ]
+}
